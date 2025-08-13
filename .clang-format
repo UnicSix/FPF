@@ -1,0 +1,8 @@
+---
+Language:        Cpp
+BasedOnStyle: Google
+AlignConsecutiveDeclarations: true
+AlignConsecutiveAssignments: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+  BeforeElse: true

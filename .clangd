@@ -1,0 +1,8 @@
+CompileFlags:
+  CompilationDatabase: build/Debug
+  Add:
+    - "--std=c++20"
+    # - "--target=x86_64-w64-windows-gnu"
+    - "-Wno-known-warning-option"
+    - "-Wno-c99-designator"
+  Remove: [-m*, -f*]
