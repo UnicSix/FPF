@@ -11,4 +11,9 @@ void Test() {
   }
 }
 
+[[nodiscard]] int Add(int a, int b, int c) {
+  int sum = a+b+c;
+  return sum;
+}
+
 }  // namespace fpf

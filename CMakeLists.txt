@@ -39,7 +39,10 @@ target_include_directories(${PROJECT_NAME}
   PRIVATE ${INCLUDE_DIRS}
 )
 
+enable_testing()
+
 add_subdirectory(examples)
+add_subdirectory(tests)
 
 message(STATUS "SOURCE DIR: ${CMAKE_SOURCE_DIR}")
 message(STATUS "BINARY DIR: ${CMAKE_BINARY_DIR}")
