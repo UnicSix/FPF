@@ -8,11 +8,12 @@ project(fpf VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_FLAGS "-std=c++20") # -fsanitize=address
 if (NOT MSVC)
+set(CMAKE_CXX_FLAGS "-std=c++20") # -fsanitize=address
 set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -g ")
 set(CMAKE_CXX_FLAGS_RELEASE "-g -O3")
 else()
+set(CMAKE_CXX_FLAGS "/std:c++20") # -fsanitize=address
 set(CMAKE_CXX_FLAGS_DEBUG   "/W4 /Od /Zi /MDd")
 set(CMAKE_CXX_FLAGS_RELEASE "/O2 /MD /Zi")
 endif()
@@ -30,24 +31,26 @@ file( GLOB_RECURSE PROJECT_SRC
 )
 message( STATUS "${Magenta}src: ${PROJECT_SRC}${ColourReset}")
 
-add_library(${PROJECT_NAME}
-  ${PROJECT_SRC}
-)
+add_library(${PROJECT_NAME} ${PROJECT_SRC})
 
 # Add include directory
 message(${PROJECT_SOURCE_DIR})
 list(APPEND INCLUDE_DIRS
   "${CMAKE_CURRENT_SOURCE_DIR}/fpf/"
+  "${CMAKE_CURRENT_SOURCE_DIR}/third-party/BitMagic/src"
 )
-message(STATUS "Source dirs: ${INCLUDE_DIRS}")
+message(STATUS "INCLUDE dirs: ${INCLUDE_DIRS}")
 target_include_directories(${PROJECT_NAME}
   PRIVATE ${INCLUDE_DIRS}
 )
 
-enable_testing()
+add_subdirectory(third-party/BitMagic)
+target_link_libraries(${PROJECT_NAME}
+  PRIVATE bm
+)
 
+enable_testing()
 add_subdirectory(examples)
 add_subdirectory(tests)
 
-message(STATUS "SOURCE DIR: ${CMAKE_SOURCE_DIR}")
 message(STATUS "BINARY DIR: ${CMAKE_BINARY_DIR}")
