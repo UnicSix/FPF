@@ -2,7 +2,6 @@
 
 #include <bitset>
 #include <cstddef>
-#include <random>
 #include <vector>
 
 #include "bm.h"
@@ -10,7 +9,7 @@
 
 namespace fpf {
 
-typedef bm::basic_bmatrix<bm::bvector<>> bmatr_32;
+using bm_mat = bm::basic_bmatrix<bm::bvector<>>;
 
 template <size_t w1, size_t w2>
 class Mat2x2 {
@@ -18,9 +17,6 @@ class Mat2x2 {
   Mat2x2(bool init = false);
   ~Mat2x2()                            = default;
   bool operator==(const Mat2x2&) const = default;
-
-  inline static std::random_device rand_device{};
-  inline static std::mt19937       rand{rand_device()};
 
   std::vector<std::bitset<w1>> matrix;
 };
@@ -33,7 +29,18 @@ Mat2x2<w1, w2>::Mat2x2(bool init) {
 template <size_t w1, size_t w2>
 class BitMat2x2 {
  public:
-  bmatr_32 matrix;
+  BitMat2x2();
+  ~BitMat2x2() = default;
+
+  bm_mat matrix;
 };
+
+// Constructs a w1 by w2 bit matrix filled with 0
+template <size_t w1, size_t w2>
+BitMat2x2<w1, w2>::BitMat2x2() :matrix(0){
+  for (size_t i = 0; i < w1; i++) {
+    [[maybe_unused]] auto row = matrix.construct_row(i);
+  }
+}
 
 }  // namespace fpf

@@ -13,7 +13,7 @@ set(CMAKE_CXX_FLAGS "-std=c++20") # -fsanitize=address
 set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -g ")
 set(CMAKE_CXX_FLAGS_RELEASE "-g -O3")
 else()
-set(CMAKE_CXX_FLAGS "/std:c++20") # -fsanitize=address
+set(CMAKE_CXX_FLAGS "/std:c++20 /EHsc") # -fsanitize=address
 set(CMAKE_CXX_FLAGS_DEBUG   "/W4 /Od /Zi /MDd")
 set(CMAKE_CXX_FLAGS_RELEASE "/O2 /MD /Zi")
 endif()
