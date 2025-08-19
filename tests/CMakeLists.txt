@@ -24,14 +24,14 @@ set_tests_properties(GraphGenTest PROPERTIES
     LABELS "GraphGen"
 )
 
-add_executable(rand_test rand_test.cpp)
-target_link_libraries(rand_test PRIVATE fpf)
-target_include_directories(rand_test PRIVATE ${INCLUDE_DIRS})
+add_executable(gen_test gen_test.cpp)
+target_link_libraries(gen_test PRIVATE fpf)
+target_include_directories(gen_test PRIVATE ${INCLUDE_DIRS})
 
-add_test(NAME RandTest COMMAND rand_test)
+add_test(NAME GenTest COMMAND gen_test)
 
-set_tests_properties(RandTest PROPERTIES
+set_tests_properties(GenTest PROPERTIES
     TIMEOUT 5
     WILL_FAIL FALSE
-    LABELS "RandTest"
+    LABELS "GenTest"
 )

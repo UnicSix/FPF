@@ -1,46 +1,34 @@
 #pragma once
 
-#include <bitset>
 #include <cstddef>
 #include <vector>
 
 #include "bm.h"
 #include "bmbmatrix.h"
+#include "bmfunc.h"
 
 namespace fpf {
 
 using bm_mat = bm::basic_bmatrix<bm::bvector<>>;
 
-template <size_t w1, size_t w2>
-class Mat2x2 {
+class BitMatGraph2D {
+  template <typename First, typename Second>
+  using pair = bm::pair<First, Second>;
+
  public:
-  Mat2x2(bool init = false);
-  ~Mat2x2()                            = default;
-  bool operator==(const Mat2x2&) const = default;
+  BitMatGraph2D(size_t size);
+  ~BitMatGraph2D() = default;
 
-  std::vector<std::bitset<w1>> matrix;
+  /* Given N vertices n0, n1, n2...n(N-1)
+   * matrix stores the connection state of each pair of nodes
+   * edge stores the correspond weight of node pair
+   * E(0->0) -> edge[0*N + 0]
+   * E(2->5) -> edge[2*N + 5]
+   * E(A->B) might != E(B->A)
+   */
+  bm_mat              matrix;
+  size_t            size;
+  std::vector<double> edge;
 };
-
-template <size_t w1, size_t w2>
-Mat2x2<w1, w2>::Mat2x2(bool init) {
-  matrix = std::vector<std::bitset<w1>>(w2, init);
-}
-
-template <size_t w1, size_t w2>
-class BitMat2x2 {
- public:
-  BitMat2x2();
-  ~BitMat2x2() = default;
-
-  bm_mat matrix;
-};
-
-// Constructs a w1 by w2 bit matrix filled with 0
-template <size_t w1, size_t w2>
-BitMat2x2<w1, w2>::BitMat2x2() :matrix(0){
-  for (size_t i = 0; i < w1; i++) {
-    [[maybe_unused]] auto row = matrix.construct_row(i);
-  }
-}
 
 }  // namespace fpf
