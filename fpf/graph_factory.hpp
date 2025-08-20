@@ -15,8 +15,9 @@ class RandGen {
   inline static std::mt19937       rd{rand_device()};
 };
 
-[[nodiscard]] inline BitMatGraph2D GenBitMatGraph(size_t N) {
-  BitMatGraph2D gen{N};
+template <typename T>
+[[nodiscard]] inline BitMatGraph2D<T> GenBitMatGraph(size_t N) {
+  BitMatGraph2D<T> gen{N};
   for (size_t i = 0; i < N; i++) {
     auto row = gen.matrix.construct_row(i);
     for (size_t j = 0; j < N; j += 2) {
@@ -31,8 +32,9 @@ class RandGen {
 namespace fpf {
 namespace util {
 
-inline void PrintGraph(BitMatGraph2D mat) {
-  size_t N = mat.size;
+template <typename T>
+inline void PrintGraph(BitMatGraph2D<T> mat) {
+  size_t N = mat.Size();
   // Output matrix
   std::cout << "Bit matrix:\n";
   for (bm::bvector_size_type i = 0; i < N; i++) {
