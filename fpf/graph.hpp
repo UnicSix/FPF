@@ -9,6 +9,12 @@
 
 namespace fpf {
 
+template <typename T>
+struct Edge {
+  int v1, v2;
+  T   dist;
+};
+
 using bm_mat = bm::basic_bmatrix<bm::bvector<>>;
 
 template <typename T>
@@ -18,6 +24,7 @@ class BitMatGraph2D {
 
  public:
   BitMatGraph2D(size_t size);
+  // BitMatGraph2D()
   ~BitMatGraph2D() = default;
 
   inline size_t Size() const { return size; }
@@ -29,19 +36,19 @@ class BitMatGraph2D {
    * E(2->5) -> edge[2*N + 5]
    * E(A->B) might != E(B->A)
    */
-  bm_mat         matrix;
-  std::vector<T> edge;
+  bm_mat         connection_;
+  std::vector<T> edge_vec_;
 
  private:
   size_t size;
 };
 
-// Constructs a w1 by w2 non-dynamic bit matrix filled with 0
+// Constructs a N by N non-dynamic bit matrix filled with 0
 template <typename T>
 BitMatGraph2D<T>::BitMatGraph2D(size_t N)
-    : matrix(N, false), size(N), edge(N * N, 0) {
+    : connection_(N, false), edge_vec_(N * N, 0), size(N) {
   for (size_t i = 0; i < N; i++) {
-    [[maybe_unused]] auto row = matrix.construct_row(i);
+    connection_.construct_row(i);
   }
 }
 

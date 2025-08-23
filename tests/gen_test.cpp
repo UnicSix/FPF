@@ -11,8 +11,9 @@ int main() {
   auto test  = fpf::BitMatGraph2D<int>{5};
   auto test2 = fpf::GenBitMatGraph<double>(19);
   auto test3 = fpf::BitMatGraph2D<float>(dist(rand.rd));
-  fpf::util::PrintGraph(test);
-  fpf::util::PrintGraph(test2);
-  fpf::util::PrintGraph(test3);
+  // fpf::util::PrintGraph(test);
+  // fpf::util::PrintGraph(test2);
+  // fpf::util::PrintGraph(test3);
+  auto test4 = fpf::TestGraph0();
   return EXIT_FAILURE;
 }

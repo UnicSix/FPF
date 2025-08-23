@@ -1,7 +1,6 @@
-#include <bitset>
 #include <cassert>
+#include <cstdlib>
 #include <exception>
-#include <format>
 #include <iostream>
 
 #include "bm.h"
@@ -48,5 +47,5 @@ int main() {
     std::cout << "Exception: " << e.what() << std::endl;
     return EXIT_FAILURE;
   }
-  return EXIT_FAILURE;
+  return EXIT_SUCCESS;
 }
