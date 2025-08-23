@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <random>
 
+#include "edge_sets.hpp"
 #include "graph.hpp"
 #include "graph_factory.hpp"
 
@@ -11,9 +12,7 @@ int main() {
   auto test  = fpf::BitMatGraph2D<int>{5};
   auto test2 = fpf::GenBitMatGraph<double>(19);
   auto test3 = fpf::BitMatGraph2D<float>(dist(rand.rd));
-  // fpf::util::PrintGraph(test);
-  // fpf::util::PrintGraph(test2);
-  // fpf::util::PrintGraph(test3);
-  auto test4 = fpf::TestGraph0();
-  return EXIT_FAILURE;
+  auto test4 = fpf::GenGraphFromEdgeSet<double>(fpf::EdgeSet6x6_0());
+  fpf::util::PrintGraph(test4);
+  return EXIT_SUCCESS;
 }

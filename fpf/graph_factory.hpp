@@ -4,8 +4,6 @@
 #include <cstddef>
 #include <random>
 
-#include "bmbmatrix.h"
-#include "edge_sets.hpp"
 #include "fpf_util.hpp"
 #include "graph.hpp"
 namespace fpf {
@@ -28,7 +26,6 @@ template <typename T>
   return gen;
 }
 
-[[nodiscard]] inline BitMatGraph2D<double> TestGraph0() {
   // 6x6 adjacency matrix (36 bits total)
   // Dense connectivity pattern
   // matrix bits: 011010 101001 110100 010110 100011 001101
@@ -44,39 +41,13 @@ template <typename T>
   //
   // Input data format:
   // Edge{v1, v2, dist}
-  auto                  edge_set = EdgeSet6x6_0();
-  BitMatGraph2D<double> gen(6);
-  // Construct edge vector
-  auto N = gen.Size();
-  util::print("mat size: {}\n", gen.connection_.rows());
-  for (auto&& edge : edge_set) {
-    util::print("Row: {}\n", edge.v1);
-    gen.connection_.get_row(static_cast<bm::bvector_size_type>(edge.v1))
-        ->set(edge.v2);
-    gen.edge_vec_.at(edge.v1 * N + edge.v2) = edge.dist;
-  }
-  for (size_t i = 0; i < N * N; ++i) {
-    if (i % N == 0) {
-      util::print("\n");
-    }
-    util::print("{:3}, ", gen.edge_vec_.at(i));
-  }
-  for (size_t i = 0; i < gen.connection_.rows(); ++i) {
-    util::print("\n");
-    for (auto en = gen.connection_.get_row(i)->first();
-         en < gen.connection_.get_row(i)->end(); ++en) {
-      util::print("{} ", en.value());
-    }
-  }
-  return gen;
-}
 
 template <typename T, size_t sz>
 [[nodiscard]] inline BitMatGraph2D<T> GenGraphFromEdgeSet(
-    std::array<T, sz> edge_set) {
-  BitMatGraph2D<double> gen(6);
+    std::array<Edge<T>, sz>&& edge_set) {
+  BitMatGraph2D<T> gen(6);
   // Construct edge vector
-  auto N = gen.Size();
+  const auto& N = gen.Size();
   for (auto&& edge : edge_set) {
     gen.connection_.get_row(edge.v1)->set(edge.v2);
     gen.edge_vec_.at(edge.v1 * N + edge.v2) = edge.dist;
@@ -87,7 +58,7 @@ template <typename T, size_t sz>
     }
     util::print("{:3}, ", gen.edge_vec_.at(i));
   }
-  for (size_t i = 0; i < gen.connection_.size(); ++i) {
+  for (size_t i = 0; i < gen.connection_.rows(); ++i) {
     util::print("\n");
     for (auto en = gen.connection_.get_row(i)->first();
          en < gen.connection_.get_row(i)->end(); ++en) {

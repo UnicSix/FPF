@@ -1,10 +1,9 @@
 #pragma once
-#include <array>
 #include <cstdio>
 #include <exception>
 #include <format>
 #include <iostream>
-#include <ostream>
+#include <span>
 #include <string>
 
 #include "graph.hpp"
@@ -25,27 +24,27 @@ template <typename T>
 inline void PrintGraph(BitMatGraph2D<T> mat) {
   size_t N = mat.Size();
   // Output matrix
-  std::cout << "Bit matrix:\n";
+  print("Bit matrix:\n");
   for (bm::bvector_size_type i = 0; i < N; i++) {
     for (bm::bvector_size_type j = 0; j < N; j++) {
-      std::cout << mat.connection_.get_row(i)->get_bit(j) << " ";
+      print("{:b} ", mat.connection_.get_row(i)->get_bit(j));
     }
-    std::cout << std::endl;
+    print("\n");
   }
   // Output edges
-  std::cout << "Edges:\n";
+  print("Edges:\n");
   for (size_t i = 0; i < N * N; i++) {
-    std::cout << mat.edge_vec_[i] << (i % N == (N - 1) ? "\n" : " ");
+    print("{:<3},{}", mat.edge_vec_[i], (i % N == (N - 1) ? "\n" : " "));
   }
-  std::cout << std::endl;
+  print("\n");
 }
 
-template <typename T, size_t size>
-void PrintArray(std::array<T, size> arr) {
-  for (auto val : arr) {
-    std::cout << val << " ";
+template <typename T>
+void PrintContainer(std::span<T> cont) {
+  for (auto val : cont) {
+    print("{} ", val);
   }
-  std::cout << std::endl;
+  print("\n");
 }
 }  // namespace util
 
