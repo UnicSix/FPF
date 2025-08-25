@@ -5,9 +5,9 @@
 #include "graph.hpp"
 
 namespace fpf {
-[[nodiscard]] inline consteval std::array<fpf::Edge<double>, 18>
+[[nodiscard]] inline consteval std::array<fpf::Edge<double>, 16>
 EdgeSet6x6_0() {
-  return std::array<Edge<double>, 18>{
+  return std::array<Edge<double>, 16>{
       Edge<double>{0, 1, 1.2},
       {0, 2, 2.3},
       {0, 4, 3.1},

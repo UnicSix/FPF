@@ -1,17 +1,3 @@
-# Sample test
-add_executable(mytest mytest.cpp)
-target_link_libraries(mytest PRIVATE fpf)
-target_include_directories(mytest PRIVATE ${INCLUDE_DIRS})
-
-add_test(NAME SimpleTest COMMAND mytest)
-
-set_tests_properties(SimpleTest PROPERTIES
-    TIMEOUT 1
-    WILL_FAIL FALSE
-    LABELS "SampleTest"
-)
-
-
 add_executable(graph_gen_test graph_gen_test.cpp)
 target_link_libraries(graph_gen_test PRIVATE fpf)
 target_include_directories(graph_gen_test PRIVATE ${INCLUDE_DIRS})
@@ -34,4 +20,16 @@ set_tests_properties(GenTest PROPERTIES
     TIMEOUT 5
     WILL_FAIL FALSE
     LABELS "GenTest"
+)
+
+add_executable(dijk dijkstra_test.cpp)
+target_link_libraries(dijk PRIVATE fpf)
+target_include_directories(dijk PRIVATE ${INCLUDE_DIRS})
+
+add_test(NAME DijkstraTest COMMAND dijk)
+
+set_tests_properties(DijkstraTest PROPERTIES
+    TIMEOUT 1
+    WILL_FAIL FALSE
+    LABELS "Dijkstra Test"
 )

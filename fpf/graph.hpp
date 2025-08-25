@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <limits>
 #include <vector>
 
 #include "bm.h"
@@ -46,7 +47,9 @@ class BitMatGraph2D {
 // Constructs a N by N non-dynamic bit matrix filled with 0
 template <typename T>
 BitMatGraph2D<T>::BitMatGraph2D(size_t N)
-    : connection_(N, false), edge_vec_(N * N, 0), size(N) {
+    : connection_(N, false),
+      edge_vec_(N * N, std::numeric_limits<T>::max()),
+      size(N) {
   for (size_t i = 0; i < N; i++) {
     connection_.construct_row(i);
   }
