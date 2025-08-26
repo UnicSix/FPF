@@ -6,3 +6,4 @@ AlignConsecutiveAssignments: true
 BreakBeforeBraces: Custom
 BraceWrapping:
   BeforeElse: true
+  BeforeCatch: true

@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <functional>
+#include <iostream>
 #include <limits>
 #include <queue>
 #include <vector>
@@ -19,19 +20,35 @@ std::vector<T> FindPath(const BitMatGraph2D<T>& graph, size_t src) {
   assert(src < graph.Size());
 
   const auto INF = std::numeric_limits<T>::max();
-  std::priority_queue<T, std::vector<T>, std::greater<T>> nodes;
+  const auto sz  = graph.Size();
+  std::priority_queue<T, std::vector<T>, std::greater<T>> vertices;
   std::vector<T> dists(graph.Size(), INF);
   bm::bvector<>  visited;
   auto           src_row = graph.connection_.get_row(src);
   dists[src]             = 0;
 
-  bool done = false;
-  // int  next = 0;
-  nodes.emplace(0);
-  while (!done) {
-    for (auto itr = src_row->first(); itr < src_row->end(); ++itr) {
+  auto DistAt = [&graph, &sz](size_t src, auto dest_ptr) {
+    assert(src * sz + dest_ptr.value() < sz*sz);
+    return graph.edge_vec_[src * sz + dest_ptr.value()];
+  };
+
+  vertices.push(src);
+  size_t cur = src;
+  while (!vertices.empty()) {
+    cur = vertices.top();
+    vertices.pop();
+    if (visited.get_bit(cur)) continue;
+    visited.set(cur);
+    src_row = graph.connection_.get_row(cur);
+
+    // loop through connected vertices
+    for (auto vtx = src_row->first(); vtx < src_row->end(); ++vtx) {
+      // vtx.value(): connected vertex
+      if (dists[vtx.value()] > dists[cur] + DistAt(cur, vtx)) {
+        dists[vtx.value()] = dists[cur] + DistAt(cur, vtx);
+        vertices.push(vtx.value());
+      }
     }
-    done = true;
   }
 
   return dists;

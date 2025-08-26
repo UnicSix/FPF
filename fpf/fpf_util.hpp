@@ -65,10 +65,10 @@ inline void PrintGraph(BitMatGraph2D<T> mat) {
 }
 
 template <typename T>
-inline void PrintContainer(const std::span<T>& cont,
+inline void PrintContainer(const std::span<T>& container,
                            std::string&&       delimiter = " ") {
   const auto INF = std::numeric_limits<T>::max();
-  for (auto&& val : cont) {
+  for (auto&& val : container) {
     if (val == INF)
       print("{:<5}{}", "INF", delimiter);
     else
