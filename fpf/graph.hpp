@@ -6,7 +6,6 @@
 
 #include "bm.h"
 #include "bmbmatrix.h"
-#include "bmfunc.h"
 
 namespace fpf {
 
@@ -31,15 +30,16 @@ using bm_mat = bm::basic_bmatrix<bm::bvector<>>;
 
 template <typename T>
 class BitMatGraph2D {
-  template <typename First, typename Second>
-  using pair = bm::pair<First, Second>;
-
  public:
   BitMatGraph2D(size_t size);
   // BitMatGraph2D()
   ~BitMatGraph2D() = default;
 
-  inline size_t Size() const { return size; }
+  inline size_t  Size() const { return size; }
+  inline const T DistAt(size_t src, auto dest_ptr) const {
+    assert(src * size + dest_ptr.value() < size * size);
+    return edge_vec_[src * size + dest_ptr.value()];
+  }
 
   /* Given N vertices n0, n1, n2...n(N-1)
    * matrix stores the connection state of each pair of nodes
