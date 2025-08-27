@@ -15,6 +15,17 @@ struct Edge {
   int v1, v2;
   T   dist;
 };
+template <typename T>
+struct Weight {
+  auto operator<=>(const Weight& other) const {
+    return this->dist <=> other.dist;
+  }
+  bool operator==(const Weight& other) const {
+    return this->dist == other.dist && this->vtx == other.vtx;
+  }
+  size_t vtx;
+  T      dist;
+};
 
 using bm_mat = bm::basic_bmatrix<bm::bvector<>>;
 
@@ -47,7 +58,7 @@ class BitMatGraph2D {
 // Constructs a N by N non-dynamic bit matrix filled with 0
 template <typename T>
 BitMatGraph2D<T>::BitMatGraph2D(size_t N)
-    : connection_(N, false),
+    : connection_(N, true),
       edge_vec_(N * N, std::numeric_limits<T>::max()),
       size(N) {
   for (size_t i = 0; i < N; i++) {
