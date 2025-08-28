@@ -24,7 +24,7 @@ std::vector<T> FindPath(const BitMatGraph2D<T>& graph, size_t src) {
                  weights;
   std::vector<T> dists(graph.Size(), INF);
   bm::bvector<>  visited;
-  auto           src_row = graph.connection_.get_row(src);
+  auto           cur_row = graph.connection_.get_row(src);
   dists[src]             = 0;
 
   weights.push(Weight<T>{src, 0});
@@ -34,10 +34,10 @@ std::vector<T> FindPath(const BitMatGraph2D<T>& graph, size_t src) {
     weights.pop();
     if (visited.get_bit(cur)) continue;
     visited.set(cur);
-    src_row = graph.connection_.get_row(cur);
+    cur_row = graph.connection_.get_row(cur);
 
     // loop through connected vertices
-    for (auto vtx = src_row->first(); vtx < src_row->end(); ++vtx) {
+    for (auto vtx = cur_row->first(); vtx < cur_row->end(); ++vtx) {
       // vtx.value(): connected vertex
       if (dists[vtx.value()] > dists[cur] + graph.DistAt(cur, vtx)) {
         dists[vtx.value()] = dists[cur] + graph.DistAt(cur, vtx);

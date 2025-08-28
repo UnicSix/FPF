@@ -40,6 +40,10 @@ class BitMatGraph2D {
     assert(src * size + dest_ptr.value() < size * size);
     return edge_vec_[src * size + dest_ptr.value()];
   }
+  inline const T DistAt(size_t src, size_t dest) const {
+    assert(src * size + dest < size * size);
+    return edge_vec_[src * size + dest];
+  }
 
   /* Given N vertices n0, n1, n2...n(N-1)
    * matrix stores the connection state of each pair of nodes
@@ -63,6 +67,7 @@ BitMatGraph2D<T>::BitMatGraph2D(size_t N)
       size(N) {
   for (size_t i = 0; i < N; i++) {
     connection_.construct_row(i);
+    edge_vec_[i * N + i] = T(0);
   }
 }
 
