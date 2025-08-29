@@ -33,3 +33,15 @@ set_tests_properties(DijkstraTest PROPERTIES
     WILL_FAIL FALSE
     LABELS "Dijkstra Test"
 )
+
+add_executable(neg_cycle neg_cycle_test.cpp)
+target_link_libraries(neg_cycle PRIVATE fpf)
+target_include_directories(neg_cycle PRIVATE ${INCLUDE_DIRS})
+
+add_test(NAME NegCycle COMMAND neg_cycle)
+
+set_tests_properties(NegCycle PROPERTIES
+    TIMEOUT 1
+    WILL_FAIL FALSE
+    LABELS "Neg Cycle Test"
+)
