@@ -26,6 +26,7 @@ std::vector<T> FindPath(const BitMatGraph2D<T>& graph, size_t src) {
       }
     }
   }
+  // Check negative cycle
 
   return dists;
 }

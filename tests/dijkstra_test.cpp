@@ -1,5 +1,6 @@
 #include "dijkstra.hpp"
 
+#include <cassert>
 #include <cstdlib>
 
 #include "bellman-ford.hpp"
@@ -22,5 +23,13 @@ int main() {
     fpf::util::println("Shortest path from {} to others", i);
     fpf::util::PrintContainer(std::span(path), " ");
   }
-  return EXIT_FAILURE;
+  for (size_t i = 0; i < 6; ++i) {
+    auto path1 = fpf::dijk::FindPath(graph, i);
+    auto path2 = fpf::belf::FindPath(graph, i);
+    assert(path1.size() == path2.size());
+    for(size_t j=0; j<path1.size(); j++) {
+      assert(path1[j] == path2[j]);
+    }
+  }
+  return EXIT_SUCCESS;
 }
