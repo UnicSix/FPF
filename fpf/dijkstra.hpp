@@ -15,7 +15,7 @@ namespace fpf {
 namespace dijk {
 
 template <typename T>
-std::vector<T> FindPath(const BitMatGraph2D<T>& graph, size_t src) {
+std::vector<T> FindPath(BitMatGraph2D<T>& graph, size_t src) {
   assert(src < graph.Size());
 
   const auto INF = std::numeric_limits<T>::max();
@@ -24,7 +24,7 @@ std::vector<T> FindPath(const BitMatGraph2D<T>& graph, size_t src) {
                  weights;
   std::vector<T> dists(graph.Size(), INF);
   bm::bvector<>  visited;
-  auto           cur_row = graph.connection_.get_row(src);
+  auto           cur_row = graph.GetRow(src);
   dists[src]             = 0;
 
   weights.push(Weight<T>{src, 0});
@@ -34,7 +34,7 @@ std::vector<T> FindPath(const BitMatGraph2D<T>& graph, size_t src) {
     weights.pop();
     if (visited.get_bit(cur)) continue;
     visited.set(cur);
-    cur_row = graph.connection_.get_row(cur);
+    cur_row = graph.GetRow(cur);
 
     // loop through connected vertices
     for (auto vtx = cur_row->first(); vtx < cur_row->end(); ++vtx) {

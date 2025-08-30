@@ -6,14 +6,22 @@
 
 #include "bm.h"
 #include "bmbmatrix.h"
+#include "bmfunc.h"
 
 namespace fpf {
 
 template <typename T>
 struct Edge {
-  int v1, v2;
-  T   dist;
+  size_t v1, v2;
+  T      dist;
 };
+template <typename T>
+
+struct pair {
+  size_t x;
+  size_t y;
+};
+
 template <typename T>
 struct Weight {
   auto operator<=>(const Weight& other) const {
@@ -35,6 +43,14 @@ class BitMatGraph2D {
   // BitMatGraph2D()
   ~BitMatGraph2D() = default;
 
+  auto GetRow(size_t index) { return connection_.get_row(index); }
+  auto ConstructRow(size_t index) { return connection_.construct_row(index); }
+  void SetWeight(const Edge<T>& edge) {
+    edge_vec_[edge.v1 * size + edge.v2] = edge.dist;
+  }
+  T& EdgeAt(size_t index) { return edge_vec_.at(index); }
+  T& operator[](size_t index) { return edge_vec_[index]; }
+
   inline size_t  Size() const { return size; }
   inline const T DistAt(size_t src, auto dest_ptr) const {
     assert(src * size + dest_ptr.value() < size * size);
@@ -52,18 +68,18 @@ class BitMatGraph2D {
    * E(2->5) -> edge[2*N + 5]
    * E(A->B) might != E(B->A)
    */
-  bm_mat         connection_;
-  std::vector<T> edge_vec_;
 
  private:
-  size_t size;
+  std::vector<T> edge_vec_;
+  bm_mat         connection_;
+  size_t         size;
 };
 
 // Constructs a N by N non-dynamic bit matrix filled with 0
 template <typename T>
 BitMatGraph2D<T>::BitMatGraph2D(size_t N)
-    : connection_(N, true),
-      edge_vec_(N * N, std::numeric_limits<T>::max()),
+    : edge_vec_(N * N, std::numeric_limits<T>::max()),
+      connection_(N, true),
       size(N) {
   for (size_t i = 0; i < N; i++) {
     connection_.construct_row(i);

@@ -18,7 +18,7 @@ template <typename T>
 [[nodiscard]] inline BitMatGraph2D<T> GenBitMatGraph(size_t N) {
   BitMatGraph2D<T> gen{N};
   for (size_t i = 0; i < N; i++) {
-    auto row = gen.connection_.construct_row(i);
+    auto row = gen.ConstructRow(i);
     for (size_t j = 0; j < N; j += 2) {
       row->set(j);
     }
@@ -46,14 +46,14 @@ template <typename T, size_t sz>
 [[nodiscard]] inline BitMatGraph2D<T> GenGraphFromEdgeSet(
     std::array<Edge<T>, sz>&& edge_set, size_t size) {
   BitMatGraph2D<T> gen(size);
-  const auto&      N = gen.Size();
   for (auto&& edge : edge_set) {
-    gen.connection_.get_row(edge.v1)->set(edge.v2);
-    gen.edge_vec_.at(edge.v1 * N + edge.v2) = edge.dist;
+    gen.GetRow(edge.v1)->set(edge.v2);
+    gen.SetWeight(edge);
   }
   // Every vertice's dist to itself is 0
   for (size_t i = 0; i < size; ++i) {
-    gen.edge_vec_[i * N + i] = T(0);
+    gen.SetWeight({i, i, T(0)});
+    // gen.edge_vec_[i * N + i] = T(0);
   }
   return gen;
 }

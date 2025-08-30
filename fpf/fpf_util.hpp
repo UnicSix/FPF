@@ -47,18 +47,18 @@ inline void PrintGraph(BitMatGraph2D<T> mat) {
   print("Bit matrix:\n");
   for (bm::bvector_size_type i = 0; i < N; i++) {
     for (bm::bvector_size_type j = 0; j < N; j++) {
-      print("{:b} ", mat.connection_.get_row(i)->get_bit(j));
+      print("{:b} ", mat.GetRow(i)->get_bit(j));
     }
     print("\n");
   }
   // Output edges
   print("Edges:\n");
   for (size_t i = 0; i < N * N; i++) {
-    if (mat.edge_vec_[i] == INF) {
+    if (mat[i] == INF) {
       print("{:<5},{}", "INF", (i % N == (N - 1) ? "\n" : " "));
     }
     else {
-      print("{:<5},{}", mat.edge_vec_[i], (i % N == (N - 1) ? "\n" : " "));
+      print("{:<5},{}", mat[i], (i % N == (N - 1) ? "\n" : " "));
     }
   }
   print("\n");
