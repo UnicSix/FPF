@@ -31,5 +31,5 @@ int main() {
       assert(path1[j] == path2[j]);
     }
   }
-  return EXIT_SUCCESS;
+  return EXIT_FAILURE;
 }

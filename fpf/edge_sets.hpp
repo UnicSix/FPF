@@ -105,4 +105,16 @@ EdgeSet3x3_SimpleNegative() {
   };
 }
 
+[[nodiscard]] inline consteval std::array<fpf::Edge<int>, 5>
+EdgeSet5x5_0() {
+  return std::array<Edge<int>, 5>{
+      Edge<int>{0, 1, -3},
+      Edge<int>{0, 4,  5},
+      Edge<int>{1, 2,  2},
+      Edge<int>{2, 3,  3},
+      Edge<int>{3, 4,  2},
+  };
+}
+
+
 }  // namespace fpf
