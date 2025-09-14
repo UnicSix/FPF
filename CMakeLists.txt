@@ -9,13 +9,16 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if (NOT MSVC)
-set(CMAKE_CXX_FLAGS "-std=c++20") # -fsanitize=address
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -g ")
-set(CMAKE_CXX_FLAGS_RELEASE "-g -O3")
+set(CMAKE_CXX_FLAGS "-std=c++20")
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 else()
-set(CMAKE_CXX_FLAGS "/std:c++20 /EHsc") # -fsanitize=address
+set(CMAKE_CXX_FLAGS "/std:c++20 /EHsc")
 set(CMAKE_CXX_FLAGS_DEBUG   "/W4 /Od /Zi /MDd")
 set(CMAKE_CXX_FLAGS_RELEASE "/O2 /MD /Zi")
+endif()
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "clang")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fno-omit-stack-pointer")
 endif()
 set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -25,13 +28,14 @@ set(ColourReset "${Esc}[0m")
 set(Blue        "${Esc}[34m")
 set(Magenta     "${Esc}[35m")
 
+find_package(absl)
+
 file( GLOB_RECURSE PROJECT_SRC
-  fpf/*.cpp
   fpf/*.hpp
 )
 message( STATUS "${Magenta}src: ${PROJECT_SRC}${ColourReset}")
 
-add_library(${PROJECT_NAME} ${PROJECT_SRC})
+add_library(${PROJECT_NAME} INTERFACE)
 
 # Add include directory
 message(${PROJECT_SOURCE_DIR})
@@ -41,12 +45,13 @@ list(APPEND INCLUDE_DIRS
 )
 message(STATUS "INCLUDE dirs: ${INCLUDE_DIRS}")
 target_include_directories(${PROJECT_NAME}
-  PRIVATE ${INCLUDE_DIRS}
+  INTERFACE ${INCLUDE_DIRS}
 )
 
 add_subdirectory(third-party/BitMagic)
 target_link_libraries(${PROJECT_NAME}
-  PRIVATE bm
+  INTERFACE bm
+  INTERFACE absl::flat_hash_map
 )
 
 enable_testing()

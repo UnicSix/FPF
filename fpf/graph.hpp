@@ -6,7 +6,7 @@
 
 #include "bm.h"
 #include "bmbmatrix.h"
-#include "bmfunc.h"
+#include <absl/container/flat_hash_map.h>
 
 namespace fpf {
 
@@ -37,26 +37,46 @@ struct Weight {
 using bm_mat = bm::basic_bmatrix<bm::bvector<>>;
 
 template <typename T>
+class FpfGraph {
+ public:
+  FpfGraph() = default;
+  ~FpfGraph() = default;
+  auto GetRow(const size_t index) { return connection_.get_row(index); }
+  auto ConstructRow(const size_t index) { return connection_.construct_row(index); }
+
+  void BatchPrepend();
+  void Pull();
+  void Initialize();
+  void Delete();
+  void Split();
+  void Insert();
+private:
+  absl::flat_hash_map<size_t, T> map;
+  bm_mat         connection_;
+  size_t         size;
+};
+
+template <typename T>
 class BitMatGraph2D {
  public:
-  BitMatGraph2D(size_t size);
+  explicit BitMatGraph2D(size_t N);
   // BitMatGraph2D()
   ~BitMatGraph2D() = default;
 
-  auto GetRow(size_t index) { return connection_.get_row(index); }
-  auto ConstructRow(size_t index) { return connection_.construct_row(index); }
-  void SetWeight(const Edge<T>& edge) {
+  [[nodiscard]] inline auto GetRow(const size_t index) { return connection_.get_row(index); }
+  auto ConstructRow(const size_t index) { return connection_.construct_row(index); }
+  inline void SetWeight(const Edge<T>& edge) {
     edge_vec_[edge.v1 * size + edge.v2] = edge.dist;
   }
-  T& EdgeAt(size_t index) { return edge_vec_.at(index); }
+  [[nodiscard]] inline T& EdgeAt(size_t index) { return edge_vec_.at(index); }
   T& operator[](size_t index) { return edge_vec_[index]; }
 
-  inline size_t  Size() const { return size; }
-  inline const T DistAt(size_t src, auto dest_ptr) const {
+  [[nodiscard]] inline size_t  Size() const { return size; }
+  inline T DistAt(const size_t src, auto dest_ptr) const {
     assert(src * size + dest_ptr.value() < size * size);
     return edge_vec_[src * size + dest_ptr.value()];
   }
-  inline const T DistAt(size_t src, size_t dest) const {
+  [[nodiscard]] inline T DistAt(const size_t src, const size_t dest) const {
     assert(src * size + dest < size * size);
     return edge_vec_[src * size + dest];
   }
@@ -77,7 +97,7 @@ class BitMatGraph2D {
 
 // Constructs a N by N non-dynamic bit matrix filled with 0
 template <typename T>
-BitMatGraph2D<T>::BitMatGraph2D(size_t N)
+BitMatGraph2D<T>::BitMatGraph2D(const size_t N)
     : edge_vec_(N * N, std::numeric_limits<T>::max()),
       connection_(N, true),
       size(N) {

@@ -1,5 +1,6 @@
 #include "fpf/fpf.hpp"
 
 int main() {
-  fpf::Test();
+  // fpf::Test();
+  return 0;
 }
